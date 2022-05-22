@@ -1,8 +1,12 @@
-1. The code shows the length of keyspace for specified bits length.
-2. Generates random keys for specified bits length.
-3. Calculate time in milliseconds of Brute-force of specified bits.
+### 1. The code shows the length of keyspace for specified bits length.
+### 2. Generates random keys for specified bits length.
+### 3. Calculate time in milliseconds of Brute-force of specified bits.
 
-Example of output of code:
+#### Example of output of code:
+	Note: *Bigger bits required so long time for Brute-force. Better to skip it :)*
+	
+___
+
 Number of possible options for specified number of bits:
 	For 8 key length exists keyspace of elements: 256
 	For 16 key length exists keyspace of elements: 65536
@@ -31,6 +35,5 @@ How much time for Brute-force attack required for generated random value:
 8-bits random key found by Brute-force attack for 1 milliseconds.
 16-bits random key found by Brute-force attack for 2 milliseconds.
 32-bits random key found by Brute-force attack for 100333 milliseconds.
-....
+....'''
 
-# Bigger bits required so long time for Brute-force. Better to skip it :)
