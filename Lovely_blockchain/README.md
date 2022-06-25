@@ -1,3 +1,6 @@
+####YOU CAN READ THE STRUCTURE OF FILES AND TEST HERE [classes_and_tests.md](classes_and_tests.md)
+
+
 Платформа голосування.
 
 Даний проєкт має на меті створення простої системи на базі технології blockchain, яка дозволить проводити онлайн
