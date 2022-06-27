@@ -1,6 +1,6 @@
 Classes of Lovely blockchain placed in 'blockchain_classes' directory. The structure is:
     
-    - [key_pair_class.py](blockchain_classes/key_pair_class.py) contains KeyPair class for generating private and public keys.
+    - key_pair_class.py contains KeyPair class for generating private and public keys.
         Private key can passed as the keyword argument (used for testing here, but can be used for generating by the
         user pseudo-random generator).
     - signature_class.py contains Signature class for generatinh signature of message by private key and verify existing
@@ -13,6 +13,6 @@ Classes of Lovely blockchain placed in 'blockchain_classes' directory. The struc
 
 Tests:
 
-    - [_test_key_pair.py](_test_key_pair.py) verifies the KeyPair class.
-    - [_test_signature.py](_test_signature.py) verifies the Signature class.
-    - [_test_account.py](_test_account.py) verifies the Account class.
+    - *_test_key_pair.py* verifies the KeyPair class.
+    - *_test_signature.py* verifies the Signature class.
+    - *_test_account.py* verifies the Account class.
