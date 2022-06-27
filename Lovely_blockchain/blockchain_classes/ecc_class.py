@@ -14,13 +14,6 @@ class ECC:
     Gy = 32670510020758816978083085130507043184471273380659243275938904335757337482424
     G_POINT = (Gx, Gy)  # Generator point for ECC multiplication
 
-    def __init__(self) -> None:
-        """
-        Initializes the ECC object with specified private key.
-        :param private_key: private key int value of the PRIVATE_KEY_LEN length.
-        """
-
-
     @staticmethod
     def modinv(a: int, n=P_VAL) -> int:
         """

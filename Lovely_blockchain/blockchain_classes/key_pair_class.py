@@ -21,7 +21,11 @@ class KeyPair:
         # compressed public key used
         self.compressed_public_key = "03" if self.public_key[1] % 2 else "02" + hex(self.public_key[0])[2:].zfill(64)
 
-    def get_keys(self):
+    def get_keys(self) -> (int, int):
+        """
+        Gets actual values of public and private keys.
+        :return: int representations of public and private keys
+        """
         return self.public_key, self.__private_key
 
     def __str__(self) -> str:
