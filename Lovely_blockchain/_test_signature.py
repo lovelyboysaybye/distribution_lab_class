@@ -12,13 +12,13 @@ if __name__ == "__main__":
     wrong_message_lost_chars = correct_message[:-3]
 
     print("Check if all correct:")
-    r, s = Signature.generate_signature(private_key, correct_message)
-    print(Signature.verify_signature(r, s, public_key, correct_message))
+    signature = Signature.generate_signature(private_key, correct_message)
+    print(Signature.verify_signature(signature, public_key, correct_message))
 
     print("\nCheck if wrong private_key was used:")
-    r, s = Signature.generate_signature(wrong_private_key, correct_message)
-    print(Signature.verify_signature(r, s, public_key, correct_message))
+    signature = Signature.generate_signature(wrong_private_key, correct_message)
+    print(Signature.verify_signature(signature, public_key, correct_message))
 
     print("\nCheck if some characters in message are lost")
-    r, s = Signature.generate_signature(private_key, correct_message)
-    print(Signature.verify_signature(r, s, public_key, wrong_message_lost_chars))
+    signature = Signature.generate_signature(private_key, correct_message)
+    print(Signature.verify_signature(signature, public_key, wrong_message_lost_chars))

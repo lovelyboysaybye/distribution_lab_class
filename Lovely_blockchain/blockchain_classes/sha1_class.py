@@ -7,7 +7,8 @@ class SHA1:
         self.h4 = 0xC3D2E1F0
 
     def get_hash(self, message):
-        message = message.encode('ascii')
+        if type(message) is str:
+            message = message.encode('ascii')
         h0 = self.h0
         h1 = self.h1
         h2 = self.h2

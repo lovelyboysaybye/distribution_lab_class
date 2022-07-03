@@ -21,6 +21,10 @@ class KeyPair:
         # compressed public key used
         self.compressed_public_key = "03" if self.public_key[1] % 2 else "02" + hex(self.public_key[0])[2:].zfill(64)
 
+        self.public_key = int.from_bytes([0x04,
+                                          *self.public_key[0].to_bytes(32, byteorder='big'),
+                                          *self.public_key[1].to_bytes(32, byteorder='big')], byteorder='big')
+
     def get_keys(self) -> (int, int):
         """
         Gets actual values of public and private keys.
@@ -31,4 +35,4 @@ class KeyPair:
     def __str__(self) -> str:
         return f"Private key: {self.__private_key}\n" \
                f"Compressed public key: {self.compressed_public_key}\n" \
-               f"Full public key: 04{hex(self.public_key[0])[2:].zfill(64)}{hex(self.public_key[1])[2:].zfill(64)}"
+               f"Full public key: 04{hex(self.public_key)}"

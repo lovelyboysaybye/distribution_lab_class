@@ -10,9 +10,11 @@ Classes of Lovely blockchain placed in 'blockchain_classes' directory. The struc
         Used in Signature and KeyPair classes.
     - account_class.py contains Account class for creating account, sending voting transactions and finding
         all previous votes.
+    - operation_class.py contains Operation class for creating and verifiyng operation by signature.
+    - transaction_class.py contains Transaction class for creating transaction.
 
 Tests:
 
     - *_test_key_pair.py* verifies the KeyPair class.
     - *_test_signature.py* verifies the Signature class.
-    - *_test_account.py* verifies the Account class.
+    - *_test_account.py* verifies the Account class. Also include Transaction (Operation) testing.

@@ -2,6 +2,8 @@ from datetime import datetime
 from typing import List
 from blockchain_classes.key_pair_class import KeyPair
 from blockchain_classes.signature_class import Signature
+from blockchain_classes.operation_class import Operation
+from blockchain_classes.transaction_class import Transaction
 
 
 class Account:
@@ -20,10 +22,14 @@ class Account:
         self.name = name
         self.surname = surname
         self.start_date = start_date
+        self.__nonce = 0
 
         # 'account_id' field is a public key of student.
         self.account_id = 0
         self.__private_key = private_key
+
+    def get_nonce(self) -> int:
+        return self.__nonce
 
     def gen_account(self, hex_code: int) -> None:
         """
@@ -55,16 +61,18 @@ class Account:
         #       If all parameters verified than API return True else False.
         return True
 
-    def create_vote_transaction(self, voting_address: int, voting_message: str) -> str:
+    def create_vote_transaction(self, voting_address: int, vote_number: int) -> Transaction:
         """
         Creates the vote transaction.
         :param voting_address: account_id for sending the vote message.
-        :param voting_message: formatted text for voting (number of candidate).
+        :param vote_number: fnumber of candidate
         :return: str of transaction
         """
 
-        # TODO: create an Transaction object for sending voting to specified address.
-        return "Transaction class not implemented yet."
+        operation = Operation(self.account_id, voting_address, vote_number, self.__private_key)
+        transaction = Transaction(operation, self.__nonce)
+        self.__nonce += 1
+        return transaction
 
     def get_votes(self) -> List:
         """
@@ -74,7 +82,7 @@ class Account:
         # TODO: find all transactions created by current account.
         return ["Transaction class not implemented yet."]
 
-    def sign_data(self, message: str) -> (int, int):
+    def sign_data(self, message: str) -> int:
         """
         Generates the signature for message by specific private_key.
         :param private_key: int value of private key
