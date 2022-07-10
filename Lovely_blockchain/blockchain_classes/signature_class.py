@@ -29,8 +29,7 @@ class Signature:
     def verify_signature(signature: int, public_key: int, message: str) -> bool:
         """
         Verifies whether the signature are correct or not.
-        :param signature_r: r of signing
-        :param signature_s: s of signing
+        :param signature: r and s of signing as one variable
         :param public_key: public key for verifying the signing by private key of this public key.
         :param message: message that signing
         :return: true if signature are correct otherwise false

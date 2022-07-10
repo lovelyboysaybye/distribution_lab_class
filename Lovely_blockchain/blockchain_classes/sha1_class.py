@@ -1,4 +1,6 @@
 class SHA1:
+    LENGTH_IN_BYTES = 20
+
     def __init__(self):
         self.h0 = 0x67452301
         self.h1 = 0xEFCDAB89
