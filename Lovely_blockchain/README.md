@@ -1,3 +1,4 @@
+#### PRESENTATION ABOUT IDEA AND PRINCIPE [Presentation.pdf](Presentation.pdf)
 #### YOU CAN READ THE STRUCTURE OF FILES AND TEST HERE [classes_and_tests.md](classes_and_tests.md)
 #### PLEASE, RUN [main.py](main.py) FOR VERIFYING ALL LOVELY BLOCKCHAIN CONCEPT (or you can find output here [main_output.md](main_output.md))
 #### THANKS FOR AWESOME COURSE AND WORK :)
