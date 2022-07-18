@@ -48,6 +48,9 @@ class Blockchain:
         Also, update the txDatabase with new transactions and voting_tickets db.
         :param block: Block for adding
         """
+        new_tx_list = list()
+        tickets_copy = list(self.voting_tickets)
+
         # Verifies whether block non-empty on transactions
         if len(block.transaction_arr) == 0:
             raise Exception("Block does not have any transaction.")
@@ -59,6 +62,7 @@ class Blockchain:
         # Verifies, that all transaction from block have not been added to a txDatabase
         if not self.__validate_tx_list_unique(block.transaction_arr):
             raise Exception("Block contains transactions that was added in previous blocks.")
+
 
         # Verifies transactions by voting tickets rules
         for transaction in block.transaction_arr:
@@ -77,14 +81,14 @@ class Blockchain:
                     raise Exception(f"Wrong singature.\n{transaction}")
 
                 # Prevent duplicates voting tickets for students.
-                if not self.__verify_voting_ticket_not_exist(transaction):
+                if not self.__verify_voting_ticket_not_exist(transaction, tickets_copy, new_tx_list):
                     raise Exception(f"Duplicate transaction.\n{transaction}")
 
-                self.voting_tickets.append(transaction.transaction_id)
+                tickets_copy.append(transaction.transaction_id)
             # Else transaction spent voting ticket
             else:
                 # Verifies, that voting_ticket not spent already
-                if transaction.operation.voting_ticket not in self.voting_tickets:
+                if transaction.operation.voting_ticket not in tickets_copy:
                     raise Exception(f"voting ticket already spent.\n{transaction}")
 
                 # Verifies voting ticket spending
@@ -96,36 +100,41 @@ class Blockchain:
 
                 if not Operation.verify_operation(transaction.operation, transaction.operation.sender_id):
                     raise Exception(f"Wrong signature.\n{transaction}")
-                self.voting_tickets.remove(transaction.operation.voting_ticket)
+                tickets_copy.remove(transaction.operation.voting_ticket)
 
-            self.txDatabase.add(transaction)
+            new_tx_list.append(transaction)
 
+        self.txDatabase.update(new_tx_list)
+        self.voting_tickets = tickets_copy
         self.__append_blockHistory(block)
         return True
 
-    def __verify_voting_ticket_not_exist(self, voting_ticket_tx: Transaction) -> bool:
+    def __verify_voting_ticket_not_exist(self, voting_ticket_tx: Transaction, tickets_copy: List[int], new_tx_list: List[Transaction]) -> bool:
         """
         Verifies if voting ticket does not exists yet. Used for verifying duplicates of voting tickets for one user.
         :param voting_ticket_tx:
         :return: True if proposed ticket is new.
         """
         tx_ticket_not_exist = True
-        for voting_ticket_id in self.voting_tickets:
-            tmp_voting_ticket = self.get_tx_by_id(voting_ticket_id)
+        for voting_ticket_id in tickets_copy:
+            tmp_voting_ticket = self.get_tx_by_id(voting_ticket_id, new_tx_list)
             if tmp_voting_ticket.operation.operation_hex == voting_ticket_tx.operation.operation_hex:
                 tx_ticket_not_exist = False
                 break
 
         return tx_ticket_not_exist
 
-    def get_tx_by_id(self, tx_id: int) -> Transaction:
+    def get_tx_by_id(self, tx_id: int, new_tx_list: List[Transaction] = None) -> Transaction:
         """
         Gets the transaction from txDatabase by id.
         :param tx_id: id of transaction for finding
+        :param new_tx_list: list of transaction
         :return: Found transaction else None
         """
+        new_tx_list = new_tx_list if new_tx_list is not None else []
+
         found_tx = None
-        for tx in self.txDatabase:
+        for tx in [*self.txDatabase, *new_tx_list]:
             if tx.transaction_id == tx_id:
                 found_tx = tx
                 break
