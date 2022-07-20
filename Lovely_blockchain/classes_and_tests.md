@@ -14,7 +14,7 @@ Classes of Lovely blockchain placed in 'blockchain_classes' directory. The struc
         list of specified students and get results of votes from blockchain txDatabase.
     - operation_class.py contains Operation class for creating and verifiyng operation by signature.
     - transaction_class.py contains Transaction class for creating transaction.
-    - block_class.py contains Block class that keeps transaction lists, point on previous block and calculates
+    - block_class.py contains Block class that keeps transaction lists (sorted), point on previous block and calculates
         current block id.
     - blockchain_class.py contains Blockchain class that create chain of block by creating genesis block, add new blocks,
         that were validated by list of rules. Contains txDatabase for all transactions. Contains voting_tickets db of

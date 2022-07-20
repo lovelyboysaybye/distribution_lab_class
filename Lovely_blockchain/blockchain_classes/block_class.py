@@ -13,7 +13,9 @@ class Block:
         :param transaction_arr: set of transaction, that should be used in block
         :param previous_hash: hash value of previous block
         """
-        self.transaction_arr = transaction_arr
+        # Transactions saved should be sorted by transaction_id value. It is necessary rule for having the same
+        # hash value.
+        self.transaction_arr = sorted(list(transaction_arr))
         self.previous_hash = previous_hash
         self.block_id = self.hash_of_block()
 

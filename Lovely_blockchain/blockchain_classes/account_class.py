@@ -1,3 +1,4 @@
+import random
 from datetime import datetime
 from typing import List
 from blockchain_classes.key_pair_class import KeyPair
@@ -24,19 +25,11 @@ class Account:
         self.name = name
         self.surname = surname
         self.start_date = start_date
-        self.__nonce = 0
 
         # 'account_id' field is a public key of student.
         self.account_id = 0
         self.__private_key = private_key
         self.gen_account()
-
-    def get_nonce(self) -> int:
-        """
-        Gets the nonce value for transaction. Used for checking duplicates of txs.
-        :return: int value of nonce
-        """
-        return self.__nonce
 
     def gen_account(self) -> None:
         """
@@ -44,7 +37,11 @@ class Account:
         """
         self.account_id, self.__private_key = KeyPair(private_key=self.__private_key).get_keys()
 
-    def create_vote_transaction(self, voting_ticket: int, voting_address: int, vote_number: int) -> Transaction:
+    def create_vote_transaction(self,
+                                voting_ticket: int,
+                                voting_address: int,
+                                vote_number: int,
+                                blockchain: Blockchain) -> Transaction:
         """
         Creates the vote transaction.
         :param voting_ticket: the hash of transaction, that provide ability for account for voting.
@@ -54,11 +51,16 @@ class Account:
                     voting ticket by another user.
         :param voting_address: account_id for sending the vote message.
         :param vote_number: number of candidate
-        :return: str of transaction
+        :param blockchain: blockchain object required for calculation nonce value from txDatabase
+        :return: Transaction
         """
+        nonce_list = [tx.nonce for tx in blockchain.txDatabase if tx.operation.sender_id == self.account_id]
+        if len(nonce_list):
+            nonce = max(nonce_list) + 1
+        else:
+            nonce = 0
         operation = Operation(self.account_id, voting_ticket, voting_address, vote_number, self.__private_key)
-        transaction = Transaction(operation, self.__nonce)
-        self.__nonce += 1
+        transaction = Transaction(operation, nonce)
         return transaction
 
     def get_voting_tickets(self, blockchain: Blockchain) -> List[Transaction]:

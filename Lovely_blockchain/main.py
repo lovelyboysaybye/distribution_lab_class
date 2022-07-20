@@ -28,7 +28,7 @@ if __name__ == "__main__":
     vote_system_acc = VotingSystemAccount(1, "Head os student government")
     print(f"Vote System Account: {vote_system_acc.account_id}\n\n")
     print("Creates a voting tickets for specified students:")
-    transactions = vote_system_acc.create_transaction_for_voting([student1.account_id, student2.account_id])
+    transactions = vote_system_acc.create_transaction_for_voting([student1.account_id, student2.account_id], blockchain)
     for tx in transactions:
         print(tx)
 
@@ -60,13 +60,15 @@ if __name__ == "__main__":
     tx1 = student1.create_vote_transaction(student2.get_voting_tickets(blockchain)[-1]  # confused spending voting tickt
                                            .transaction_id,             # Get last tx of voting ticket
                                            vote_system_acc.account_id,  # Get id of voting system
-                                           1                            # Vote for 1'st person
+                                           1,                           # Vote for 1'st person
+                                           blockchain
                                            )
     print(tx1)
     tx2 = student2.create_vote_transaction(student1.get_voting_tickets(blockchain)[-1]  # confused spending voting tickt
                                            .transaction_id,             # Get last tx of voting ticket
                                            vote_system_acc.account_id,  # Get id of voting system
-                                           2                            # Vote for 1'st person
+                                           2,                           # Vote for 2'st person
+                                           blockchain
                                            )
     print(tx2)
 
@@ -82,7 +84,7 @@ if __name__ == "__main__":
         print(ex)
         print("BLOCK WAS NOT ADDED!\n")
 
-    print("Student1 cannot spent student2 voting ticket, so block wasnot added.")
+    print("Student1 cannot spent student2 voting ticket, so block was not added.")
     blockchain.print()
 
     print("\nLet's try to create correct votes.")
@@ -90,13 +92,15 @@ if __name__ == "__main__":
     tx1 = student1.create_vote_transaction(student1.get_voting_tickets(blockchain)[-1]
                                            .transaction_id,  # Get last tx of voting ticket
                                            vote_system_acc.account_id,  # Get id of voting system
-                                           1  # Vote for 1'st person
+                                           1,                           # Vote for 1'st person
+                                           blockchain
                                            )
     print(tx1)
     tx2 = student2.create_vote_transaction(student2.get_voting_tickets(blockchain)[-1]
                                            .transaction_id,  # Get last tx of voting ticket
                                            vote_system_acc.account_id,  # Get id of voting system
-                                           2  # Vote for 1'st person
+                                           2,                           # Vote for 2'st person
+                                           blockchain
                                            )
     print(tx2)
 
@@ -129,11 +133,11 @@ if __name__ == "__main__":
     vote_system_acc2 = VotingSystemAccount(2, "General Secretary")
     print(f"Vote System Account: {vote_system_acc2.account_id}\n\n")
     print("Creates a voting tickets for specified students for VoteSystem2:")
-    transactions2 = vote_system_acc2.create_transaction_for_voting([student1.account_id])
+    transactions2 = vote_system_acc2.create_transaction_for_voting([student1.account_id], blockchain)
     for tx in transactions2:
         print(tx)
     print("Creates a voting tickets for specified students for VoteSystem1:")
-    transactions1 = vote_system_acc.create_transaction_for_voting([student1.account_id])
+    transactions1 = vote_system_acc.create_transaction_for_voting([student1.account_id], blockchain)
     for tx in transactions1:
         print(tx)
 
@@ -157,7 +161,8 @@ if __name__ == "__main__":
     # Students voting:
     tx1 = student1.create_vote_transaction(list(transactions2)[0].transaction_id,  # Get voting ticket from VoteSys2
                                            vote_system_acc.account_id,             # Get id of VoteSys1
-                                           3  # Vote for 1'st person
+                                           3,                           # Vote for 3'st person
+                                           blockchain
                                            )
     print(tx1)
 

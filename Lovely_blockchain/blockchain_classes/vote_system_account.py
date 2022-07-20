@@ -20,19 +20,10 @@ class VotingSystemAccount:
         self.vote_id = vote_id
         self.name_of_vote = name_of_vote
 
-        self.__nonce = 0
-
         # 'account_id' field is a public key of votingSystemAccount
         self.account_id = 0
         self.__private_key = private_key
         self.gen_account()
-
-    def get_nonce(self) -> int:
-        """
-        Gets the nonce value for transaction. Used for checking duplicates of txs.
-        :return: int value of nonce
-        """
-        return self.__nonce
 
     def gen_account(self) -> None:
         """
@@ -40,17 +31,24 @@ class VotingSystemAccount:
         """
         self.account_id, self.__private_key = KeyPair(private_key=self.__private_key).get_keys()
 
-    def create_transaction_for_voting(self, students_voting_addresses: List[int]) -> Set[Transaction]:
+    def create_transaction_for_voting(self, students_voting_addresses: List[int], blockchain: Blockchain) -> Set[Transaction]:
         """
         Creates the voting tickets for voting.
         :param students_voting_addresses: List of students that will take a part in voting process of current vote.
+        :param blockchain: blockchain object required for calculation nonce value from txDatabase
         :return: List of transaction
         """
         list_of_transactions = []
+        nonce_list = [tx.nonce for tx in blockchain.txDatabase if tx.operation.sender_id == self.account_id]
+        if len(nonce_list):
+            nonce = max(nonce_list) + 1
+        else:
+            nonce = 0
+
         for student_id in students_voting_addresses:
             operation = Operation(self.account_id, 0, student_id, 0, self.__private_key)
-            transaction = Transaction(operation, self.__nonce)
-            self.__nonce += 1
+            transaction = Transaction(operation, nonce)
+            nonce += 1
             list_of_transactions.append(transaction)
         return set(list_of_transactions)
 

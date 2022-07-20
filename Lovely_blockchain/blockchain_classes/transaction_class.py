@@ -22,3 +22,14 @@ class Transaction:
         :return: string representation of object.
         """
         return f"Transaction id: {self.transaction_id}\nNonce: {self.nonce}\nOperation: {self.operation}"
+
+    def __lt__(self, other) -> bool:
+        """
+        Required for sorting transactions in a block.
+        :param other: Transaction object
+        :return: less than or not
+        """
+        if self.nonce == other.nonce:
+            return self.transaction_id < other.transaction_id
+        else:
+            return self.nonce < other.nonce

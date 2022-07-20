@@ -63,9 +63,21 @@ class Blockchain:
         if not self.__validate_tx_list_unique(block.transaction_arr):
             raise Exception("Block contains transactions that was added in previous blocks.")
 
-
         # Verifies transactions by voting tickets rules
         for transaction in block.transaction_arr:
+            # Verifies nonce value. Should not exist value bigger or equal than current value. Also should exist value -1
+            txs_nonce_by_sender = [tx.nonce for tx in [*new_tx_list, *self.txDatabase] if tx.operation.sender_id == transaction.operation.sender_id]
+
+            # Nonce verifications
+            if transaction.nonce == 0 and transaction.nonce in txs_nonce_by_sender:
+                raise Exception(f"Zero nonce transaction already exists by user.\n{transaction}")
+
+            if transaction.nonce != 0:
+                if transaction.nonce in txs_nonce_by_sender:
+                    raise Exception(f"Transaction with that nonce value already exists.\n{transaction}")
+
+                if transaction.nonce - 1 not in txs_nonce_by_sender:
+                    raise Exception(f"Nonce - 1 not found. Please, create nonce - 1 transaction.\n{transaction}")
 
             # Transaction, that create voting tickets.
             if transaction.operation.voting_ticket == 0:
@@ -146,4 +158,4 @@ class Blockchain:
         :param transaction_arr: list of transaction
         :return: if all transaction does not exist in txDatabase yet return True, otherwise False.
         """
-        return len(self.txDatabase & transaction_arr) == 0
+        return len(set(self.txDatabase) & set(transaction_arr)) == 0
